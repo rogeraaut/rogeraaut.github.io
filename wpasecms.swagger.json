@@ -1,0 +1,5977 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "ase LIQUID DIGITAL design"
+  },
+  "host": "wp.wolfspool.chickenkiller.com/wpasecms",
+  "basePath": "/wp-json",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "multipart/form-data"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/wp/v2/posts": {
+      "get": {
+        "parameters": [
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          },
+          {
+            "name": "page",
+            "type": "integer",
+            "in": "query",
+            "description": "Current page of the collection.",
+            "default": 1,
+            "minimum": 1,
+            "format": "number"
+          },
+          {
+            "name": "per_page",
+            "type": "integer",
+            "in": "query",
+            "description": "Maximum number of items to be returned in result set.",
+            "default": 10,
+            "minimum": 1,
+            "format": "number",
+            "maximum": 100
+          },
+          {
+            "name": "search",
+            "type": "string",
+            "in": "query",
+            "description": "Limit results to those matching a string."
+          },
+          {
+            "name": "after",
+            "type": "string",
+            "in": "query",
+            "description": "Limit response to resources published after a given ISO8601 compliant date.",
+            "format": "date-time"
+          },
+          {
+            "name": "author",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to posts assigned to specific authors.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "author_exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Ensure result set excludes posts assigned to specific authors.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before",
+            "type": "string",
+            "in": "query",
+            "description": "Limit response to resources published before a given ISO8601 compliant date.",
+            "format": "date-time"
+          },
+          {
+            "name": "exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Ensure result set excludes specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "type": "integer",
+            "in": "query",
+            "description": "Offset the result set by a specific number of items."
+          },
+          {
+            "name": "order",
+            "type": "string",
+            "in": "query",
+            "description": "Order sort attribute ascending or descending.",
+            "default": "desc",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          },
+          {
+            "name": "orderby",
+            "type": "string",
+            "in": "query",
+            "description": "Sort collection by object attribute.",
+            "default": "date",
+            "enum": [
+              "date",
+              "relevance",
+              "id",
+              "include",
+              "title",
+              "slug"
+            ]
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to posts with a specific slug."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to posts assigned a specific status; can be comma-delimited list of status types.",
+            "default": "publish",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private",
+              "trash",
+              "auto-draft",
+              "inherit",
+              "any"
+            ]
+          },
+          {
+            "name": "filter",
+            "type": "string",
+            "in": "query",
+            "description": "Use WP Query arguments to modify the response; private query vars require appropriate authorization."
+          },
+          {
+            "name": "categories",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to all items that have the specified term assigned in the categories taxonomy.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tags",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to all items that have the specified term assigned in the tags taxonomy.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sticky",
+            "type": "boolean",
+            "in": "query",
+            "description": "Limit result set to items that are sticky."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/post"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "date",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, in the site's timezone.",
+            "format": "date-time"
+          },
+          {
+            "name": "date_gmt",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, as GMT.",
+            "format": "date-time"
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "formData",
+            "description": "An alphanumeric identifier for the object unique to its type."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "in": "formData",
+            "description": "A named status for the object.",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private"
+            ]
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "in": "formData",
+            "description": "The title for the object."
+          },
+          {
+            "name": "content",
+            "type": "string",
+            "in": "formData",
+            "description": "The content for the object."
+          },
+          {
+            "name": "author",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the author of the object."
+          },
+          {
+            "name": "excerpt",
+            "type": "string",
+            "in": "formData",
+            "description": "The excerpt for the object."
+          },
+          {
+            "name": "featured_media",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id of the featured media for the object."
+          },
+          {
+            "name": "comment_status",
+            "type": "string",
+            "in": "formData",
+            "description": "Whether or not comments are open on the object.",
+            "enum": [
+              "open",
+              "closed"
+            ]
+          },
+          {
+            "name": "ping_status",
+            "type": "string",
+            "in": "formData",
+            "description": "Whether or not the object can be pinged.",
+            "enum": [
+              "open",
+              "closed"
+            ]
+          },
+          {
+            "name": "format",
+            "type": "string",
+            "in": "formData",
+            "description": "The format for the object.",
+            "enum": [
+              "standard",
+              "aside",
+              "chat",
+              "gallery",
+              "link",
+              "image",
+              "quote",
+              "status",
+              "video",
+              "audio"
+            ]
+          },
+          {
+            "name": "sticky",
+            "type": "boolean",
+            "in": "formData",
+            "description": "Whether or not the object should be treated as sticky."
+          },
+          {
+            "name": "password",
+            "type": "string",
+            "in": "formData",
+            "description": "A password to protect access to the content and excerpt."
+          },
+          {
+            "name": "categories",
+            "type": "array",
+            "in": "formData",
+            "description": "The terms assigned to the object in the category taxonomy.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tags",
+            "type": "array",
+            "in": "formData",
+            "description": "The terms assigned to the object in the post_tag taxonomy.",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/post"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/post"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/posts/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          },
+          {
+            "name": "password",
+            "type": "string",
+            "in": "query",
+            "description": "The password for the post if it is password protected."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/post"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "date",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, in the site's timezone.",
+            "format": "date-time"
+          },
+          {
+            "name": "date_gmt",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, as GMT.",
+            "format": "date-time"
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "formData",
+            "description": "An alphanumeric identifier for the object unique to its type."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "in": "formData",
+            "description": "A named status for the object.",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private"
+            ]
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "in": "formData",
+            "description": "The title for the object."
+          },
+          {
+            "name": "content",
+            "type": "string",
+            "in": "formData",
+            "description": "The content for the object."
+          },
+          {
+            "name": "author",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the author of the object."
+          },
+          {
+            "name": "excerpt",
+            "type": "string",
+            "in": "formData",
+            "description": "The excerpt for the object."
+          },
+          {
+            "name": "featured_media",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id of the featured media for the object."
+          },
+          {
+            "name": "comment_status",
+            "type": "string",
+            "in": "formData",
+            "description": "Whether or not comments are open on the object.",
+            "enum": [
+              "open",
+              "closed"
+            ]
+          },
+          {
+            "name": "ping_status",
+            "type": "string",
+            "in": "formData",
+            "description": "Whether or not the object can be pinged.",
+            "enum": [
+              "open",
+              "closed"
+            ]
+          },
+          {
+            "name": "format",
+            "type": "string",
+            "in": "formData",
+            "description": "The format for the object.",
+            "enum": [
+              "standard",
+              "aside",
+              "chat",
+              "gallery",
+              "link",
+              "image",
+              "quote",
+              "status",
+              "video",
+              "audio"
+            ]
+          },
+          {
+            "name": "sticky",
+            "type": "boolean",
+            "in": "formData",
+            "description": "Whether or not the object should be treated as sticky."
+          },
+          {
+            "name": "password",
+            "type": "string",
+            "in": "formData",
+            "description": "A password to protect access to the content and excerpt."
+          },
+          {
+            "name": "categories",
+            "type": "array",
+            "in": "formData",
+            "description": "The terms assigned to the object in the category taxonomy.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tags",
+            "type": "array",
+            "in": "formData",
+            "description": "The terms assigned to the object in the post_tag taxonomy.",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/post"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "force",
+            "type": "string",
+            "in": "query",
+            "description": "Whether to bypass trash and force deletion."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/post"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/posts/{parent}/revisions": {
+      "get": {
+        "parameters": [
+          {
+            "name": "parent",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/post-revision"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/posts/{parent}/revisions/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "parent",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/post-revision"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "parent",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/post-revision"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/pages": {
+      "get": {
+        "parameters": [
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          },
+          {
+            "name": "page",
+            "type": "integer",
+            "in": "query",
+            "description": "Current page of the collection.",
+            "default": 1,
+            "minimum": 1,
+            "format": "number"
+          },
+          {
+            "name": "per_page",
+            "type": "integer",
+            "in": "query",
+            "description": "Maximum number of items to be returned in result set.",
+            "default": 10,
+            "minimum": 1,
+            "format": "number",
+            "maximum": 100
+          },
+          {
+            "name": "search",
+            "type": "string",
+            "in": "query",
+            "description": "Limit results to those matching a string."
+          },
+          {
+            "name": "after",
+            "type": "string",
+            "in": "query",
+            "description": "Limit response to resources published after a given ISO8601 compliant date.",
+            "format": "date-time"
+          },
+          {
+            "name": "author",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to posts assigned to specific authors.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "author_exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Ensure result set excludes posts assigned to specific authors.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before",
+            "type": "string",
+            "in": "query",
+            "description": "Limit response to resources published before a given ISO8601 compliant date.",
+            "format": "date-time"
+          },
+          {
+            "name": "exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Ensure result set excludes specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "menu_order",
+            "type": "integer",
+            "in": "query",
+            "description": "Limit result set to resources with a specific menu_order value."
+          },
+          {
+            "name": "offset",
+            "type": "integer",
+            "in": "query",
+            "description": "Offset the result set by a specific number of items."
+          },
+          {
+            "name": "order",
+            "type": "string",
+            "in": "query",
+            "description": "Order sort attribute ascending or descending.",
+            "default": "desc",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          },
+          {
+            "name": "orderby",
+            "type": "string",
+            "in": "query",
+            "description": "Sort collection by object attribute.",
+            "default": "date",
+            "enum": [
+              "date",
+              "relevance",
+              "id",
+              "include",
+              "title",
+              "slug",
+              "menu_order"
+            ]
+          },
+          {
+            "name": "parent",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to those of particular parent ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parent_exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to all items except those of a particular parent id.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to posts with a specific slug."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to posts assigned a specific status; can be comma-delimited list of status types.",
+            "default": "publish",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private",
+              "trash",
+              "auto-draft",
+              "inherit",
+              "any"
+            ]
+          },
+          {
+            "name": "filter",
+            "type": "string",
+            "in": "query",
+            "description": "Use WP Query arguments to modify the response; private query vars require appropriate authorization."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/page"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "date",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, in the site's timezone.",
+            "format": "date-time"
+          },
+          {
+            "name": "date_gmt",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, as GMT.",
+            "format": "date-time"
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "formData",
+            "description": "An alphanumeric identifier for the object unique to its type."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "in": "formData",
+            "description": "A named status for the object.",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private"
+            ]
+          },
+          {
+            "name": "parent",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the parent of the object."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "in": "formData",
+            "description": "The title for the object."
+          },
+          {
+            "name": "content",
+            "type": "string",
+            "in": "formData",
+            "description": "The content for the object."
+          },
+          {
+            "name": "author",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the author of the object."
+          },
+          {
+            "name": "excerpt",
+            "type": "string",
+            "in": "formData",
+            "description": "The excerpt for the object."
+          },
+          {
+            "name": "featured_media",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id of the featured media for the object."
+          },
+          {
+            "name": "comment_status",
+            "type": "string",
+            "in": "formData",
+            "description": "Whether or not comments are open on the object.",
+            "enum": [
+              "open",
+              "closed"
+            ]
+          },
+          {
+            "name": "ping_status",
+            "type": "string",
+            "in": "formData",
+            "description": "Whether or not the object can be pinged.",
+            "enum": [
+              "open",
+              "closed"
+            ]
+          },
+          {
+            "name": "menu_order",
+            "type": "integer",
+            "in": "formData",
+            "description": "The order of the object in relation to other object of its type."
+          },
+          {
+            "name": "template",
+            "type": "string",
+            "in": "formData",
+            "description": "The theme file to use to display the object.",
+            "enum": [
+              "full-width.php"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/page"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/page"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/pages/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          },
+          {
+            "name": "password",
+            "type": "string",
+            "in": "query",
+            "description": "The password for the post if it is password protected."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/page"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "date",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, in the site's timezone.",
+            "format": "date-time"
+          },
+          {
+            "name": "date_gmt",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, as GMT.",
+            "format": "date-time"
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "formData",
+            "description": "An alphanumeric identifier for the object unique to its type."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "in": "formData",
+            "description": "A named status for the object.",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private"
+            ]
+          },
+          {
+            "name": "parent",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the parent of the object."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "in": "formData",
+            "description": "The title for the object."
+          },
+          {
+            "name": "content",
+            "type": "string",
+            "in": "formData",
+            "description": "The content for the object."
+          },
+          {
+            "name": "author",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the author of the object."
+          },
+          {
+            "name": "excerpt",
+            "type": "string",
+            "in": "formData",
+            "description": "The excerpt for the object."
+          },
+          {
+            "name": "featured_media",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id of the featured media for the object."
+          },
+          {
+            "name": "comment_status",
+            "type": "string",
+            "in": "formData",
+            "description": "Whether or not comments are open on the object.",
+            "enum": [
+              "open",
+              "closed"
+            ]
+          },
+          {
+            "name": "ping_status",
+            "type": "string",
+            "in": "formData",
+            "description": "Whether or not the object can be pinged.",
+            "enum": [
+              "open",
+              "closed"
+            ]
+          },
+          {
+            "name": "menu_order",
+            "type": "integer",
+            "in": "formData",
+            "description": "The order of the object in relation to other object of its type."
+          },
+          {
+            "name": "template",
+            "type": "string",
+            "in": "formData",
+            "description": "The theme file to use to display the object.",
+            "enum": [
+              "full-width.php"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/page"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "force",
+            "type": "string",
+            "in": "query",
+            "description": "Whether to bypass trash and force deletion."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/page"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/pages/{parent}/revisions": {
+      "get": {
+        "parameters": [
+          {
+            "name": "parent",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/page-revision"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/pages/{parent}/revisions/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "parent",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/page-revision"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "parent",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/page-revision"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/media": {
+      "get": {
+        "parameters": [
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          },
+          {
+            "name": "page",
+            "type": "integer",
+            "in": "query",
+            "description": "Current page of the collection.",
+            "default": 1,
+            "minimum": 1,
+            "format": "number"
+          },
+          {
+            "name": "per_page",
+            "type": "integer",
+            "in": "query",
+            "description": "Maximum number of items to be returned in result set.",
+            "default": 10,
+            "minimum": 1,
+            "format": "number",
+            "maximum": 100
+          },
+          {
+            "name": "search",
+            "type": "string",
+            "in": "query",
+            "description": "Limit results to those matching a string."
+          },
+          {
+            "name": "after",
+            "type": "string",
+            "in": "query",
+            "description": "Limit response to resources published after a given ISO8601 compliant date.",
+            "format": "date-time"
+          },
+          {
+            "name": "author",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to posts assigned to specific authors.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "author_exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Ensure result set excludes posts assigned to specific authors.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before",
+            "type": "string",
+            "in": "query",
+            "description": "Limit response to resources published before a given ISO8601 compliant date.",
+            "format": "date-time"
+          },
+          {
+            "name": "exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Ensure result set excludes specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "type": "integer",
+            "in": "query",
+            "description": "Offset the result set by a specific number of items."
+          },
+          {
+            "name": "order",
+            "type": "string",
+            "in": "query",
+            "description": "Order sort attribute ascending or descending.",
+            "default": "desc",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          },
+          {
+            "name": "orderby",
+            "type": "string",
+            "in": "query",
+            "description": "Sort collection by object attribute.",
+            "default": "date",
+            "enum": [
+              "date",
+              "relevance",
+              "id",
+              "include",
+              "title",
+              "slug"
+            ]
+          },
+          {
+            "name": "parent",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to those of particular parent ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parent_exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to all items except those of a particular parent id.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to posts with a specific slug."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to posts assigned a specific status; can be comma-delimited list of status types.",
+            "default": "inherit",
+            "enum": [
+              "inherit",
+              "private",
+              "trash"
+            ]
+          },
+          {
+            "name": "filter",
+            "type": "string",
+            "in": "query",
+            "description": "Use WP Query arguments to modify the response; private query vars require appropriate authorization."
+          },
+          {
+            "name": "media_type",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to attachments of a particular media type.",
+            "enum": [
+              "image",
+              "video",
+              "text",
+              "application",
+              "audio"
+            ]
+          },
+          {
+            "name": "mime_type",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to attachments of a particular mime type."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/attachment"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "date",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, in the site's timezone.",
+            "format": "date-time"
+          },
+          {
+            "name": "date_gmt",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, as GMT.",
+            "format": "date-time"
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "formData",
+            "description": "An alphanumeric identifier for the object unique to its type."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "in": "formData",
+            "description": "A named status for the object.",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private"
+            ]
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "in": "formData",
+            "description": "The title for the object."
+          },
+          {
+            "name": "author",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the author of the object."
+          },
+          {
+            "name": "comment_status",
+            "type": "string",
+            "in": "formData",
+            "description": "Whether or not comments are open on the object.",
+            "enum": [
+              "open",
+              "closed"
+            ]
+          },
+          {
+            "name": "ping_status",
+            "type": "string",
+            "in": "formData",
+            "description": "Whether or not the object can be pinged.",
+            "enum": [
+              "open",
+              "closed"
+            ]
+          },
+          {
+            "name": "alt_text",
+            "type": "string",
+            "in": "formData",
+            "description": "Alternative text to display when resource is not displayed."
+          },
+          {
+            "name": "caption",
+            "type": "string",
+            "in": "formData",
+            "description": "The caption for the resource."
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "in": "formData",
+            "description": "The description for the resource."
+          },
+          {
+            "name": "post",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the associated post of the resource."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/attachment"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/attachment"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/media/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          },
+          {
+            "name": "password",
+            "type": "string",
+            "in": "query",
+            "description": "The password for the post if it is password protected."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/attachment"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "date",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, in the site's timezone.",
+            "format": "date-time"
+          },
+          {
+            "name": "date_gmt",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, as GMT.",
+            "format": "date-time"
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "formData",
+            "description": "An alphanumeric identifier for the object unique to its type."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "in": "formData",
+            "description": "A named status for the object.",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private"
+            ]
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "in": "formData",
+            "description": "The title for the object."
+          },
+          {
+            "name": "author",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the author of the object."
+          },
+          {
+            "name": "comment_status",
+            "type": "string",
+            "in": "formData",
+            "description": "Whether or not comments are open on the object.",
+            "enum": [
+              "open",
+              "closed"
+            ]
+          },
+          {
+            "name": "ping_status",
+            "type": "string",
+            "in": "formData",
+            "description": "Whether or not the object can be pinged.",
+            "enum": [
+              "open",
+              "closed"
+            ]
+          },
+          {
+            "name": "alt_text",
+            "type": "string",
+            "in": "formData",
+            "description": "Alternative text to display when resource is not displayed."
+          },
+          {
+            "name": "caption",
+            "type": "string",
+            "in": "formData",
+            "description": "The caption for the resource."
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "in": "formData",
+            "description": "The description for the resource."
+          },
+          {
+            "name": "post",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the associated post of the resource."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/attachment"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "force",
+            "type": "string",
+            "in": "query",
+            "description": "Whether to bypass trash and force deletion."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/attachment"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/sample-user": {
+      "get": {
+        "parameters": [
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          },
+          {
+            "name": "page",
+            "type": "integer",
+            "in": "query",
+            "description": "Current page of the collection.",
+            "default": 1,
+            "minimum": 1,
+            "format": "number"
+          },
+          {
+            "name": "per_page",
+            "type": "integer",
+            "in": "query",
+            "description": "Maximum number of items to be returned in result set.",
+            "default": 10,
+            "minimum": 1,
+            "format": "number",
+            "maximum": 100
+          },
+          {
+            "name": "search",
+            "type": "string",
+            "in": "query",
+            "description": "Limit results to those matching a string."
+          },
+          {
+            "name": "after",
+            "type": "string",
+            "in": "query",
+            "description": "Limit response to resources published after a given ISO8601 compliant date.",
+            "format": "date-time"
+          },
+          {
+            "name": "author",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to posts assigned to specific authors.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "author_exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Ensure result set excludes posts assigned to specific authors.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before",
+            "type": "string",
+            "in": "query",
+            "description": "Limit response to resources published before a given ISO8601 compliant date.",
+            "format": "date-time"
+          },
+          {
+            "name": "exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Ensure result set excludes specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "type": "integer",
+            "in": "query",
+            "description": "Offset the result set by a specific number of items."
+          },
+          {
+            "name": "order",
+            "type": "string",
+            "in": "query",
+            "description": "Order sort attribute ascending or descending.",
+            "default": "desc",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          },
+          {
+            "name": "orderby",
+            "type": "string",
+            "in": "query",
+            "description": "Sort collection by object attribute.",
+            "default": "date",
+            "enum": [
+              "date",
+              "relevance",
+              "id",
+              "include",
+              "title",
+              "slug"
+            ]
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to posts with a specific slug."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to posts assigned a specific status; can be comma-delimited list of status types.",
+            "default": "publish",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private",
+              "trash",
+              "auto-draft",
+              "inherit",
+              "any"
+            ]
+          },
+          {
+            "name": "filter",
+            "type": "string",
+            "in": "query",
+            "description": "Use WP Query arguments to modify the response; private query vars require appropriate authorization."
+          },
+          {
+            "name": "categories",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to all items that have the specified term assigned in the categories taxonomy.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tags",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to all items that have the specified term assigned in the tags taxonomy.",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/sample-user"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "date",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, in the site's timezone.",
+            "format": "date-time"
+          },
+          {
+            "name": "date_gmt",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, as GMT.",
+            "format": "date-time"
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "formData",
+            "description": "An alphanumeric identifier for the object unique to its type."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "in": "formData",
+            "description": "A named status for the object.",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private"
+            ]
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "in": "formData",
+            "description": "The title for the object."
+          },
+          {
+            "name": "content",
+            "type": "string",
+            "in": "formData",
+            "description": "The content for the object."
+          },
+          {
+            "name": "author",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the author of the object."
+          },
+          {
+            "name": "categories",
+            "type": "array",
+            "in": "formData",
+            "description": "The terms assigned to the object in the category taxonomy.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tags",
+            "type": "array",
+            "in": "formData",
+            "description": "The terms assigned to the object in the post_tag taxonomy.",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/sample-user"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/sample-user"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/sample-user/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          },
+          {
+            "name": "password",
+            "type": "string",
+            "in": "query",
+            "description": "The password for the post if it is password protected."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/sample-user"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "date",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, in the site's timezone.",
+            "format": "date-time"
+          },
+          {
+            "name": "date_gmt",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published, as GMT.",
+            "format": "date-time"
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "formData",
+            "description": "An alphanumeric identifier for the object unique to its type."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "in": "formData",
+            "description": "A named status for the object.",
+            "enum": [
+              "publish",
+              "future",
+              "draft",
+              "pending",
+              "private"
+            ]
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "in": "formData",
+            "description": "The title for the object."
+          },
+          {
+            "name": "content",
+            "type": "string",
+            "in": "formData",
+            "description": "The content for the object."
+          },
+          {
+            "name": "author",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the author of the object."
+          },
+          {
+            "name": "categories",
+            "type": "array",
+            "in": "formData",
+            "description": "The terms assigned to the object in the category taxonomy.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tags",
+            "type": "array",
+            "in": "formData",
+            "description": "The terms assigned to the object in the post_tag taxonomy.",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/sample-user"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "force",
+            "type": "string",
+            "in": "query",
+            "description": "Whether to bypass trash and force deletion."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/sample-user"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/sample-user/{parent}/revisions": {
+      "get": {
+        "parameters": [
+          {
+            "name": "parent",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/sample-user-revision"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/sample-user/{parent}/revisions/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "parent",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/sample-user-revision"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "parent",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/sample-user-revision"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/types": {
+      "get": {
+        "parameters": [
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/type"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/types/{type}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "type",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/type"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/statuses": {
+      "get": {
+        "parameters": [
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/status"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/statuses/{status}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "status",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/status"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/taxonomies": {
+      "get": {
+        "parameters": [
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          },
+          {
+            "name": "type",
+            "type": "string",
+            "in": "query",
+            "description": "Limit results to resources associated with a specific post type."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/taxonomy"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/taxonomies/{taxonomy}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "taxonomy",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/taxonomy"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/categories": {
+      "get": {
+        "parameters": [
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          },
+          {
+            "name": "page",
+            "type": "integer",
+            "in": "query",
+            "description": "Current page of the collection.",
+            "default": 1,
+            "minimum": 1,
+            "format": "number"
+          },
+          {
+            "name": "per_page",
+            "type": "integer",
+            "in": "query",
+            "description": "Maximum number of items to be returned in result set.",
+            "default": 10,
+            "minimum": 1,
+            "format": "number",
+            "maximum": 100
+          },
+          {
+            "name": "search",
+            "type": "string",
+            "in": "query",
+            "description": "Limit results to those matching a string."
+          },
+          {
+            "name": "exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Ensure result set excludes specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "type": "string",
+            "in": "query",
+            "description": "Order sort attribute ascending or descending.",
+            "default": "asc",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          },
+          {
+            "name": "orderby",
+            "type": "string",
+            "in": "query",
+            "description": "Sort collection by resource attribute.",
+            "default": "name",
+            "enum": [
+              "id",
+              "include",
+              "name",
+              "slug",
+              "term_group",
+              "description",
+              "count"
+            ]
+          },
+          {
+            "name": "hide_empty",
+            "type": "boolean",
+            "in": "query",
+            "description": "Whether to hide resources not assigned to any posts."
+          },
+          {
+            "name": "parent",
+            "type": "integer",
+            "in": "query",
+            "description": "Limit result set to resources assigned to a specific parent."
+          },
+          {
+            "name": "post",
+            "type": "integer",
+            "in": "query",
+            "description": "Limit result set to resources assigned to a specific post."
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to resources with a specific slug."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/category"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "description",
+            "type": "string",
+            "in": "formData",
+            "description": "HTML description of the resource."
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "in": "formData",
+            "description": "HTML title for the resource.",
+            "required": true
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "formData",
+            "description": "An alphanumeric identifier for the resource unique to its type."
+          },
+          {
+            "name": "parent",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the parent of the resource."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/category"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/category"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/categories/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/category"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "in": "formData",
+            "description": "HTML description of the resource."
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "in": "formData",
+            "description": "HTML title for the resource."
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "formData",
+            "description": "An alphanumeric identifier for the resource unique to its type."
+          },
+          {
+            "name": "parent",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the parent of the resource."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/category"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "force",
+            "type": "string",
+            "in": "query",
+            "description": "Required to be true, as resource does not support trashing."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/category"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/tags": {
+      "get": {
+        "parameters": [
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          },
+          {
+            "name": "page",
+            "type": "integer",
+            "in": "query",
+            "description": "Current page of the collection.",
+            "default": 1,
+            "minimum": 1,
+            "format": "number"
+          },
+          {
+            "name": "per_page",
+            "type": "integer",
+            "in": "query",
+            "description": "Maximum number of items to be returned in result set.",
+            "default": 10,
+            "minimum": 1,
+            "format": "number",
+            "maximum": 100
+          },
+          {
+            "name": "search",
+            "type": "string",
+            "in": "query",
+            "description": "Limit results to those matching a string."
+          },
+          {
+            "name": "exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Ensure result set excludes specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "type": "integer",
+            "in": "query",
+            "description": "Offset the result set by a specific number of items."
+          },
+          {
+            "name": "order",
+            "type": "string",
+            "in": "query",
+            "description": "Order sort attribute ascending or descending.",
+            "default": "asc",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          },
+          {
+            "name": "orderby",
+            "type": "string",
+            "in": "query",
+            "description": "Sort collection by resource attribute.",
+            "default": "name",
+            "enum": [
+              "id",
+              "include",
+              "name",
+              "slug",
+              "term_group",
+              "description",
+              "count"
+            ]
+          },
+          {
+            "name": "hide_empty",
+            "type": "boolean",
+            "in": "query",
+            "description": "Whether to hide resources not assigned to any posts."
+          },
+          {
+            "name": "post",
+            "type": "integer",
+            "in": "query",
+            "description": "Limit result set to resources assigned to a specific post."
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to resources with a specific slug."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/tag"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "description",
+            "type": "string",
+            "in": "formData",
+            "description": "HTML description of the resource."
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "in": "formData",
+            "description": "HTML title for the resource.",
+            "required": true
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "formData",
+            "description": "An alphanumeric identifier for the resource unique to its type."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/tag"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/tag"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/tags/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/tag"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "in": "formData",
+            "description": "HTML description of the resource."
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "in": "formData",
+            "description": "HTML title for the resource."
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "formData",
+            "description": "An alphanumeric identifier for the resource unique to its type."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/tag"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "force",
+            "type": "string",
+            "in": "query",
+            "description": "Required to be true, as resource does not support trashing."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/tag"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/users": {
+      "get": {
+        "parameters": [
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          },
+          {
+            "name": "page",
+            "type": "integer",
+            "in": "query",
+            "description": "Current page of the collection.",
+            "default": 1,
+            "minimum": 1,
+            "format": "number"
+          },
+          {
+            "name": "per_page",
+            "type": "integer",
+            "in": "query",
+            "description": "Maximum number of items to be returned in result set.",
+            "default": 10,
+            "minimum": 1,
+            "format": "number",
+            "maximum": 100
+          },
+          {
+            "name": "search",
+            "type": "string",
+            "in": "query",
+            "description": "Limit results to those matching a string."
+          },
+          {
+            "name": "exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Ensure result set excludes specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "type": "integer",
+            "in": "query",
+            "description": "Offset the result set by a specific number of items."
+          },
+          {
+            "name": "order",
+            "type": "string",
+            "in": "query",
+            "description": "Order sort attribute ascending or descending.",
+            "default": "asc",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          },
+          {
+            "name": "orderby",
+            "type": "string",
+            "in": "query",
+            "description": "Sort collection by object attribute.",
+            "default": "name",
+            "enum": [
+              "id",
+              "include",
+              "name",
+              "registered_date",
+              "slug",
+              "email",
+              "url"
+            ]
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to resources with a specific slug."
+          },
+          {
+            "name": "roles",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to resources matching at least one specific role provided. Accepts csv list or single role.",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/user"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "username",
+            "type": "string",
+            "in": "formData",
+            "description": "Login name for the resource.",
+            "required": true
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "in": "formData",
+            "description": "Display name for the resource."
+          },
+          {
+            "name": "first_name",
+            "type": "string",
+            "in": "formData",
+            "description": "First name for the resource."
+          },
+          {
+            "name": "last_name",
+            "type": "string",
+            "in": "formData",
+            "description": "Last name for the resource."
+          },
+          {
+            "name": "email",
+            "type": "string",
+            "in": "formData",
+            "description": "The email address for the resource.",
+            "format": "email",
+            "required": true
+          },
+          {
+            "name": "url",
+            "type": "string",
+            "in": "formData",
+            "description": "URL of the resource.",
+            "format": "uri"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "in": "formData",
+            "description": "Description of the resource."
+          },
+          {
+            "name": "nickname",
+            "type": "string",
+            "in": "formData",
+            "description": "The nickname for the resource."
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "formData",
+            "description": "An alphanumeric identifier for the resource."
+          },
+          {
+            "name": "roles",
+            "type": "array",
+            "in": "formData",
+            "description": "Roles assigned to the resource.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "type": "string",
+            "in": "formData",
+            "description": "Password for the resource (never included).",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/users/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "username",
+            "type": "string",
+            "in": "formData",
+            "description": "Login name for the resource."
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "in": "formData",
+            "description": "Display name for the resource."
+          },
+          {
+            "name": "first_name",
+            "type": "string",
+            "in": "formData",
+            "description": "First name for the resource."
+          },
+          {
+            "name": "last_name",
+            "type": "string",
+            "in": "formData",
+            "description": "Last name for the resource."
+          },
+          {
+            "name": "email",
+            "type": "string",
+            "in": "formData",
+            "description": "The email address for the resource.",
+            "format": "email"
+          },
+          {
+            "name": "url",
+            "type": "string",
+            "in": "formData",
+            "description": "URL of the resource.",
+            "format": "uri"
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "in": "formData",
+            "description": "Description of the resource."
+          },
+          {
+            "name": "nickname",
+            "type": "string",
+            "in": "formData",
+            "description": "The nickname for the resource."
+          },
+          {
+            "name": "slug",
+            "type": "string",
+            "in": "formData",
+            "description": "An alphanumeric identifier for the resource."
+          },
+          {
+            "name": "roles",
+            "type": "array",
+            "in": "formData",
+            "description": "Roles assigned to the resource.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "type": "string",
+            "in": "formData",
+            "description": "Password for the resource (never included)."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "force",
+            "type": "string",
+            "in": "query",
+            "description": "Required to be true, as resource does not support trashing."
+          },
+          {
+            "name": "reassign",
+            "type": "string",
+            "in": "query"
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/comments": {
+      "get": {
+        "parameters": [
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          },
+          {
+            "name": "page",
+            "type": "integer",
+            "in": "query",
+            "description": "Current page of the collection.",
+            "default": 1,
+            "minimum": 1,
+            "format": "number"
+          },
+          {
+            "name": "per_page",
+            "type": "integer",
+            "in": "query",
+            "description": "Maximum number of items to be returned in result set.",
+            "default": 10,
+            "minimum": 1,
+            "format": "number",
+            "maximum": 100
+          },
+          {
+            "name": "search",
+            "type": "string",
+            "in": "query",
+            "description": "Limit results to those matching a string."
+          },
+          {
+            "name": "after",
+            "type": "string",
+            "in": "query",
+            "description": "Limit response to resources published after a given ISO8601 compliant date.",
+            "format": "date-time"
+          },
+          {
+            "name": "author",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to comments assigned to specific user ids. Requires authorization.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "author_exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Ensure result set excludes comments assigned to specific user ids. Requires authorization.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "author_email",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to that from a specific author email. Requires authorization.",
+            "format": "email"
+          },
+          {
+            "name": "before",
+            "type": "string",
+            "in": "query",
+            "description": "Limit response to resources published before a given ISO8601 compliant date.",
+            "format": "date-time"
+          },
+          {
+            "name": "exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Ensure result set excludes specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to specific ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "karma",
+            "type": "integer",
+            "in": "query",
+            "description": "Limit result set to that of a particular comment karma. Requires authorization."
+          },
+          {
+            "name": "offset",
+            "type": "integer",
+            "in": "query",
+            "description": "Offset the result set by a specific number of comments."
+          },
+          {
+            "name": "order",
+            "type": "string",
+            "in": "query",
+            "description": "Order sort attribute ascending or descending.",
+            "default": "desc",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          },
+          {
+            "name": "orderby",
+            "type": "string",
+            "in": "query",
+            "description": "Sort collection by object attribute.",
+            "default": "date_gmt",
+            "enum": [
+              "date",
+              "date_gmt",
+              "id",
+              "include",
+              "post",
+              "parent",
+              "type"
+            ]
+          },
+          {
+            "name": "parent",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to resources of specific parent ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parent_exclude",
+            "type": "array",
+            "in": "query",
+            "description": "Ensure result set excludes specific parent ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "post",
+            "type": "array",
+            "in": "query",
+            "description": "Limit result set to resources assigned to specific post ids.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to comments assigned a specific status. Requires authorization.",
+            "default": "approve"
+          },
+          {
+            "name": "type",
+            "type": "string",
+            "in": "query",
+            "description": "Limit result set to comments assigned a specific type. Requires authorization.",
+            "default": "comment"
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/comment"
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "author",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id of the user object, if author was a user."
+          },
+          {
+            "name": "author_email",
+            "type": "string",
+            "in": "formData",
+            "description": "Email address for the object author.",
+            "format": "email"
+          },
+          {
+            "name": "author_ip",
+            "type": "string",
+            "in": "formData",
+            "description": "IP address for the object author.",
+            "format": "ipv4",
+            "default": "127.0.0.1"
+          },
+          {
+            "name": "author_name",
+            "type": "string",
+            "in": "formData",
+            "description": "Display name for the object author."
+          },
+          {
+            "name": "author_url",
+            "type": "string",
+            "in": "formData",
+            "description": "URL for the object author.",
+            "format": "uri"
+          },
+          {
+            "name": "content",
+            "type": "string",
+            "in": "formData",
+            "description": "The content for the object."
+          },
+          {
+            "name": "date",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published.",
+            "format": "date-time"
+          },
+          {
+            "name": "date_gmt",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published as GMT.",
+            "format": "date-time"
+          },
+          {
+            "name": "karma",
+            "type": "integer",
+            "in": "formData",
+            "description": "Karma for the object."
+          },
+          {
+            "name": "parent",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the parent of the object."
+          },
+          {
+            "name": "post",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id of the associated post object."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "in": "formData",
+            "description": "State of the object."
+          },
+          {
+            "name": "type",
+            "type": "string",
+            "in": "formData",
+            "description": "Type of Comment for the object.",
+            "default": "comment"
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          },
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        }
+      }
+    },
+    "/wp/v2/comments/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "context",
+            "type": "string",
+            "in": "query",
+            "description": "Scope under which the request is made; determines fields present in response.",
+            "default": "view",
+            "enum": [
+              "view",
+              "embed",
+              "edit"
+            ]
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "post": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "author",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id of the user object, if author was a user."
+          },
+          {
+            "name": "author_email",
+            "type": "string",
+            "in": "formData",
+            "description": "Email address for the object author.",
+            "format": "email"
+          },
+          {
+            "name": "author_ip",
+            "type": "string",
+            "in": "formData",
+            "description": "IP address for the object author.",
+            "format": "ipv4"
+          },
+          {
+            "name": "author_name",
+            "type": "string",
+            "in": "formData",
+            "description": "Display name for the object author."
+          },
+          {
+            "name": "author_url",
+            "type": "string",
+            "in": "formData",
+            "description": "URL for the object author.",
+            "format": "uri"
+          },
+          {
+            "name": "content",
+            "type": "string",
+            "in": "formData",
+            "description": "The content for the object."
+          },
+          {
+            "name": "date",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published.",
+            "format": "date-time"
+          },
+          {
+            "name": "date_gmt",
+            "type": "string",
+            "in": "formData",
+            "description": "The date the object was published as GMT.",
+            "format": "date-time"
+          },
+          {
+            "name": "karma",
+            "type": "integer",
+            "in": "formData",
+            "description": "Karma for the object."
+          },
+          {
+            "name": "parent",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id for the parent of the object."
+          },
+          {
+            "name": "post",
+            "type": "integer",
+            "in": "formData",
+            "description": "The id of the associated post object."
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "in": "formData",
+            "description": "State of the object."
+          },
+          {
+            "name": "type",
+            "type": "string",
+            "in": "formData",
+            "description": "Type of Comment for the object."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "force",
+            "type": "string",
+            "in": "query",
+            "description": "Whether to bypass trash and force deletion."
+          }
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          },
+          {
+            "oauth": [
+              "basic"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "error": {
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "post": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "description": "The date the object was published, in the site's timezone.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "date_gmt": {
+          "description": "The date the object was published, as GMT.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "guid": {
+          "description": "The globally unique identifier for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "GUID for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "GUID for the object, transformed for display.",
+              "type": "string"
+            }
+          }
+        },
+        "id": {
+          "description": "Unique identifier for the object.",
+          "type": "integer"
+        },
+        "link": {
+          "description": "URL to the object.",
+          "type": "string",
+          "format": "uri"
+        },
+        "modified": {
+          "description": "The date the object was last modified, in the site's timezone.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified_gmt": {
+          "description": "The date the object was last modified, as GMT.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "slug": {
+          "description": "An alphanumeric identifier for the object unique to its type.",
+          "type": "string"
+        },
+        "status": {
+          "description": "A named status for the object.",
+          "type": "string",
+          "enum": [
+            "publish",
+            "future",
+            "draft",
+            "pending",
+            "private"
+          ]
+        },
+        "type": {
+          "description": "Type of Post for the object.",
+          "type": "string"
+        },
+        "title": {
+          "description": "The title for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Title for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML title for the object, transformed for display.",
+              "type": "string"
+            }
+          }
+        },
+        "content": {
+          "description": "The content for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Content for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML content for the object, transformed for display.",
+              "type": "string"
+            },
+            "protected": {
+              "description": "Whether the content is protected with a password.",
+              "type": "boolean"
+            }
+          }
+        },
+        "author": {
+          "description": "The id for the author of the object.",
+          "type": "integer"
+        },
+        "excerpt": {
+          "description": "The excerpt for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Excerpt for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML excerpt for the object, transformed for display.",
+              "type": "string"
+            },
+            "protected": {
+              "description": "Whether the excerpt is protected with a password.",
+              "type": "boolean"
+            }
+          }
+        },
+        "featured_media": {
+          "description": "The id of the featured media for the object.",
+          "type": "integer"
+        },
+        "comment_status": {
+          "description": "Whether or not comments are open on the object.",
+          "type": "string",
+          "enum": [
+            "open",
+            "closed"
+          ]
+        },
+        "ping_status": {
+          "description": "Whether or not the object can be pinged.",
+          "type": "string",
+          "enum": [
+            "open",
+            "closed"
+          ]
+        },
+        "format": {
+          "description": "The format for the object.",
+          "type": "string",
+          "enum": [
+            "standard",
+            "aside",
+            "chat",
+            "gallery",
+            "link",
+            "image",
+            "quote",
+            "status",
+            "video",
+            "audio"
+          ]
+        },
+        "sticky": {
+          "description": "Whether or not the object should be treated as sticky.",
+          "type": "boolean"
+        },
+        "password": {
+          "description": "A password to protect access to the content and excerpt.",
+          "type": "string"
+        },
+        "categories": {
+          "description": "The terms assigned to the object in the category taxonomy.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "description": "The terms assigned to the object in the post_tag taxonomy.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "post-revision": {
+      "type": "object",
+      "properties": {
+        "author": {
+          "description": "The id for the author of the object.",
+          "type": "integer"
+        },
+        "date": {
+          "description": "The date the object was published.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "date_gmt": {
+          "description": "The date the object was published, as GMT.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "guid": {
+          "description": "The globally unique identifier for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "GUID for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "GUID for the object, transformed for display.",
+              "type": "string"
+            }
+          }
+        },
+        "id": {
+          "description": "Unique identifier for the object.",
+          "type": "integer"
+        },
+        "modified": {
+          "description": "The date the object was last modified.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified_gmt": {
+          "description": "The date the object was last modified, as GMT.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "parent": {
+          "description": "The id for the parent of the object.",
+          "type": "integer"
+        },
+        "slug": {
+          "description": "An alphanumeric identifier for the object unique to its type.",
+          "type": "string"
+        },
+        "title": {
+          "description": "The title for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Title for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML title for the object, transformed for display.",
+              "type": "string"
+            }
+          }
+        },
+        "content": {
+          "description": "The content for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Content for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML content for the object, transformed for display.",
+              "type": "string"
+            },
+            "protected": {
+              "description": "Whether the content is protected with a password.",
+              "type": "boolean"
+            }
+          }
+        },
+        "excerpt": {
+          "description": "The excerpt for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Excerpt for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML excerpt for the object, transformed for display.",
+              "type": "string"
+            },
+            "protected": {
+              "description": "Whether the excerpt is protected with a password.",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "page": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "description": "The date the object was published, in the site's timezone.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "date_gmt": {
+          "description": "The date the object was published, as GMT.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "guid": {
+          "description": "The globally unique identifier for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "GUID for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "GUID for the object, transformed for display.",
+              "type": "string"
+            }
+          }
+        },
+        "id": {
+          "description": "Unique identifier for the object.",
+          "type": "integer"
+        },
+        "link": {
+          "description": "URL to the object.",
+          "type": "string",
+          "format": "uri"
+        },
+        "modified": {
+          "description": "The date the object was last modified, in the site's timezone.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified_gmt": {
+          "description": "The date the object was last modified, as GMT.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "slug": {
+          "description": "An alphanumeric identifier for the object unique to its type.",
+          "type": "string"
+        },
+        "status": {
+          "description": "A named status for the object.",
+          "type": "string",
+          "enum": [
+            "publish",
+            "future",
+            "draft",
+            "pending",
+            "private"
+          ]
+        },
+        "type": {
+          "description": "Type of Post for the object.",
+          "type": "string"
+        },
+        "parent": {
+          "description": "The id for the parent of the object.",
+          "type": "integer"
+        },
+        "title": {
+          "description": "The title for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Title for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML title for the object, transformed for display.",
+              "type": "string"
+            }
+          }
+        },
+        "content": {
+          "description": "The content for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Content for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML content for the object, transformed for display.",
+              "type": "string"
+            },
+            "protected": {
+              "description": "Whether the content is protected with a password.",
+              "type": "boolean"
+            }
+          }
+        },
+        "author": {
+          "description": "The id for the author of the object.",
+          "type": "integer"
+        },
+        "excerpt": {
+          "description": "The excerpt for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Excerpt for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML excerpt for the object, transformed for display.",
+              "type": "string"
+            },
+            "protected": {
+              "description": "Whether the excerpt is protected with a password.",
+              "type": "boolean"
+            }
+          }
+        },
+        "featured_media": {
+          "description": "The id of the featured media for the object.",
+          "type": "integer"
+        },
+        "comment_status": {
+          "description": "Whether or not comments are open on the object.",
+          "type": "string",
+          "enum": [
+            "open",
+            "closed"
+          ]
+        },
+        "ping_status": {
+          "description": "Whether or not the object can be pinged.",
+          "type": "string",
+          "enum": [
+            "open",
+            "closed"
+          ]
+        },
+        "menu_order": {
+          "description": "The order of the object in relation to other object of its type.",
+          "type": "integer"
+        },
+        "template": {
+          "description": "The theme file to use to display the object.",
+          "type": "string",
+          "enum": [
+            "full-width.php"
+          ]
+        }
+      }
+    },
+    "page-revision": {
+      "type": "object",
+      "properties": {
+        "author": {
+          "description": "The id for the author of the object.",
+          "type": "integer"
+        },
+        "date": {
+          "description": "The date the object was published.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "date_gmt": {
+          "description": "The date the object was published, as GMT.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "guid": {
+          "description": "The globally unique identifier for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "GUID for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "GUID for the object, transformed for display.",
+              "type": "string"
+            }
+          }
+        },
+        "id": {
+          "description": "Unique identifier for the object.",
+          "type": "integer"
+        },
+        "modified": {
+          "description": "The date the object was last modified.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified_gmt": {
+          "description": "The date the object was last modified, as GMT.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "parent": {
+          "description": "The id for the parent of the object.",
+          "type": "integer"
+        },
+        "slug": {
+          "description": "An alphanumeric identifier for the object unique to its type.",
+          "type": "string"
+        },
+        "title": {
+          "description": "The title for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Title for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML title for the object, transformed for display.",
+              "type": "string"
+            }
+          }
+        },
+        "content": {
+          "description": "The content for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Content for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML content for the object, transformed for display.",
+              "type": "string"
+            },
+            "protected": {
+              "description": "Whether the content is protected with a password.",
+              "type": "boolean"
+            }
+          }
+        },
+        "excerpt": {
+          "description": "The excerpt for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Excerpt for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML excerpt for the object, transformed for display.",
+              "type": "string"
+            },
+            "protected": {
+              "description": "Whether the excerpt is protected with a password.",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "attachment": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "description": "The date the object was published, in the site's timezone.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "date_gmt": {
+          "description": "The date the object was published, as GMT.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "guid": {
+          "description": "The globally unique identifier for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "GUID for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "GUID for the object, transformed for display.",
+              "type": "string"
+            }
+          }
+        },
+        "id": {
+          "description": "Unique identifier for the object.",
+          "type": "integer"
+        },
+        "link": {
+          "description": "URL to the object.",
+          "type": "string",
+          "format": "uri"
+        },
+        "modified": {
+          "description": "The date the object was last modified, in the site's timezone.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified_gmt": {
+          "description": "The date the object was last modified, as GMT.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "slug": {
+          "description": "An alphanumeric identifier for the object unique to its type.",
+          "type": "string"
+        },
+        "status": {
+          "description": "A named status for the object.",
+          "type": "string",
+          "enum": [
+            "publish",
+            "future",
+            "draft",
+            "pending",
+            "private"
+          ]
+        },
+        "type": {
+          "description": "Type of Post for the object.",
+          "type": "string"
+        },
+        "title": {
+          "description": "The title for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Title for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML title for the object, transformed for display.",
+              "type": "string"
+            }
+          }
+        },
+        "author": {
+          "description": "The id for the author of the object.",
+          "type": "integer"
+        },
+        "comment_status": {
+          "description": "Whether or not comments are open on the object.",
+          "type": "string",
+          "enum": [
+            "open",
+            "closed"
+          ]
+        },
+        "ping_status": {
+          "description": "Whether or not the object can be pinged.",
+          "type": "string",
+          "enum": [
+            "open",
+            "closed"
+          ]
+        },
+        "alt_text": {
+          "description": "Alternative text to display when resource is not displayed.",
+          "type": "string"
+        },
+        "caption": {
+          "description": "The caption for the resource.",
+          "type": "string"
+        },
+        "description": {
+          "description": "The description for the resource.",
+          "type": "string"
+        },
+        "media_type": {
+          "description": "Type of resource.",
+          "type": "string",
+          "enum": [
+            "image",
+            "file"
+          ]
+        },
+        "mime_type": {
+          "description": "Mime type of resource.",
+          "type": "string"
+        },
+        "media_details": {
+          "description": "Details about the resource file, specific to its type.",
+          "type": "object"
+        },
+        "post": {
+          "description": "The id for the associated post of the resource.",
+          "type": "integer"
+        },
+        "source_url": {
+          "description": "URL to the original resource file.",
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "sample-user": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "description": "The date the object was published, in the site's timezone.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "date_gmt": {
+          "description": "The date the object was published, as GMT.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "guid": {
+          "description": "The globally unique identifier for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "GUID for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "GUID for the object, transformed for display.",
+              "type": "string"
+            }
+          }
+        },
+        "id": {
+          "description": "Unique identifier for the object.",
+          "type": "integer"
+        },
+        "link": {
+          "description": "URL to the object.",
+          "type": "string",
+          "format": "uri"
+        },
+        "modified": {
+          "description": "The date the object was last modified, in the site's timezone.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified_gmt": {
+          "description": "The date the object was last modified, as GMT.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "slug": {
+          "description": "An alphanumeric identifier for the object unique to its type.",
+          "type": "string"
+        },
+        "status": {
+          "description": "A named status for the object.",
+          "type": "string",
+          "enum": [
+            "publish",
+            "future",
+            "draft",
+            "pending",
+            "private"
+          ]
+        },
+        "type": {
+          "description": "Type of Post for the object.",
+          "type": "string"
+        },
+        "title": {
+          "description": "The title for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Title for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML title for the object, transformed for display.",
+              "type": "string"
+            }
+          }
+        },
+        "content": {
+          "description": "The content for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Content for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML content for the object, transformed for display.",
+              "type": "string"
+            },
+            "protected": {
+              "description": "Whether the content is protected with a password.",
+              "type": "boolean"
+            }
+          }
+        },
+        "author": {
+          "description": "The id for the author of the object.",
+          "type": "integer"
+        },
+        "categories": {
+          "description": "The terms assigned to the object in the category taxonomy.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "description": "The terms assigned to the object in the post_tag taxonomy.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "sample-user-revision": {
+      "type": "object",
+      "properties": {
+        "author": {
+          "description": "The id for the author of the object.",
+          "type": "integer"
+        },
+        "date": {
+          "description": "The date the object was published.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "date_gmt": {
+          "description": "The date the object was published, as GMT.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "guid": {
+          "description": "The globally unique identifier for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "GUID for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "GUID for the object, transformed for display.",
+              "type": "string"
+            }
+          }
+        },
+        "id": {
+          "description": "Unique identifier for the object.",
+          "type": "integer"
+        },
+        "modified": {
+          "description": "The date the object was last modified.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified_gmt": {
+          "description": "The date the object was last modified, as GMT.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "parent": {
+          "description": "The id for the parent of the object.",
+          "type": "integer"
+        },
+        "slug": {
+          "description": "An alphanumeric identifier for the object unique to its type.",
+          "type": "string"
+        },
+        "title": {
+          "description": "The title for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Title for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML title for the object, transformed for display.",
+              "type": "string"
+            }
+          }
+        },
+        "content": {
+          "description": "The content for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Content for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML content for the object, transformed for display.",
+              "type": "string"
+            },
+            "protected": {
+              "description": "Whether the content is protected with a password.",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "type": {
+      "type": "object",
+      "properties": {
+        "capabilities": {
+          "description": "All capabilities used by the resource.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "description": "A human-readable description of the resource.",
+          "type": "string"
+        },
+        "hierarchical": {
+          "description": "Whether or not the resource should have children.",
+          "type": "boolean"
+        },
+        "labels": {
+          "description": "Human-readable labels for the resource for various contexts.",
+          "type": "object"
+        },
+        "name": {
+          "description": "The title for the resource.",
+          "type": "string"
+        },
+        "slug": {
+          "description": "An alphanumeric identifier for the resource.",
+          "type": "string"
+        }
+      }
+    },
+    "status": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The title for the resource.",
+          "type": "string"
+        },
+        "private": {
+          "description": "Whether posts with this resource should be private.",
+          "type": "boolean"
+        },
+        "protected": {
+          "description": "Whether posts with this resource should be protected.",
+          "type": "boolean"
+        },
+        "public": {
+          "description": "Whether posts of this resource should be shown in the front end of the site.",
+          "type": "boolean"
+        },
+        "queryable": {
+          "description": "Whether posts with this resource should be publicly-queryable.",
+          "type": "boolean"
+        },
+        "show_in_list": {
+          "description": "Whether to include posts in the edit listing for their post type.",
+          "type": "boolean"
+        },
+        "slug": {
+          "description": "An alphanumeric identifier for the resource.",
+          "type": "string"
+        }
+      }
+    },
+    "taxonomy": {
+      "type": "object",
+      "properties": {
+        "capabilities": {
+          "description": "All capabilities used by the resource.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "description": "A human-readable description of the resource.",
+          "type": "string"
+        },
+        "hierarchical": {
+          "description": "Whether or not the resource should have children.",
+          "type": "boolean"
+        },
+        "labels": {
+          "description": "Human-readable labels for the resource for various contexts.",
+          "type": "object"
+        },
+        "name": {
+          "description": "The title for the resource.",
+          "type": "string"
+        },
+        "slug": {
+          "description": "An alphanumeric identifier for the resource.",
+          "type": "string"
+        },
+        "show_cloud": {
+          "description": "Whether or not the term cloud should be displayed.",
+          "type": "boolean"
+        },
+        "types": {
+          "description": "Types associated with resource.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the resource.",
+          "type": "integer"
+        },
+        "count": {
+          "description": "Number of published posts for the resource.",
+          "type": "integer"
+        },
+        "description": {
+          "description": "HTML description of the resource.",
+          "type": "string"
+        },
+        "link": {
+          "description": "URL to the resource.",
+          "type": "string",
+          "format": "uri"
+        },
+        "name": {
+          "description": "HTML title for the resource.",
+          "type": "string"
+        },
+        "slug": {
+          "description": "An alphanumeric identifier for the resource unique to its type.",
+          "type": "string"
+        },
+        "taxonomy": {
+          "description": "Type attribution for the resource.",
+          "type": "string",
+          "enum": [
+            "category",
+            "post_tag",
+            "nav_menu",
+            "link_category",
+            "post_format",
+            "ngg_tag",
+            "tribe_events_cat"
+          ]
+        },
+        "parent": {
+          "description": "The id for the parent of the resource.",
+          "type": "integer"
+        }
+      }
+    },
+    "tag": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the resource.",
+          "type": "integer"
+        },
+        "count": {
+          "description": "Number of published posts for the resource.",
+          "type": "integer"
+        },
+        "description": {
+          "description": "HTML description of the resource.",
+          "type": "string"
+        },
+        "link": {
+          "description": "URL to the resource.",
+          "type": "string",
+          "format": "uri"
+        },
+        "name": {
+          "description": "HTML title for the resource.",
+          "type": "string"
+        },
+        "slug": {
+          "description": "An alphanumeric identifier for the resource unique to its type.",
+          "type": "string"
+        },
+        "taxonomy": {
+          "description": "Type attribution for the resource.",
+          "type": "string",
+          "enum": [
+            "category",
+            "post_tag",
+            "nav_menu",
+            "link_category",
+            "post_format",
+            "ngg_tag",
+            "tribe_events_cat"
+          ]
+        }
+      }
+    },
+    "user": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the resource.",
+          "type": "integer"
+        },
+        "username": {
+          "description": "Login name for the resource.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Display name for the resource.",
+          "type": "string"
+        },
+        "first_name": {
+          "description": "First name for the resource.",
+          "type": "string"
+        },
+        "last_name": {
+          "description": "Last name for the resource.",
+          "type": "string"
+        },
+        "email": {
+          "description": "The email address for the resource.",
+          "type": "string",
+          "format": "email"
+        },
+        "url": {
+          "description": "URL of the resource.",
+          "type": "string",
+          "format": "uri"
+        },
+        "description": {
+          "description": "Description of the resource.",
+          "type": "string"
+        },
+        "link": {
+          "description": "Author URL to the resource.",
+          "type": "string",
+          "format": "uri"
+        },
+        "nickname": {
+          "description": "The nickname for the resource.",
+          "type": "string"
+        },
+        "slug": {
+          "description": "An alphanumeric identifier for the resource.",
+          "type": "string"
+        },
+        "registered_date": {
+          "description": "Registration date for the resource.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "roles": {
+          "description": "Roles assigned to the resource.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "password": {
+          "description": "Password for the resource (never included).",
+          "type": "string"
+        },
+        "capabilities": {
+          "description": "All capabilities assigned to the resource.",
+          "type": "object"
+        },
+        "extra_capabilities": {
+          "description": "Any extra capabilities assigned to the resource.",
+          "type": "object"
+        },
+        "avatar_urls": {
+          "description": "Avatar URLs for the resource.",
+          "type": "object",
+          "properties": {
+            "24": {
+              "description": "Avatar URL with image size of 24 pixels.",
+              "type": "string",
+              "format": "uri"
+            },
+            "48": {
+              "description": "Avatar URL with image size of 48 pixels.",
+              "type": "string",
+              "format": "uri"
+            },
+            "96": {
+              "description": "Avatar URL with image size of 96 pixels.",
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        }
+      }
+    },
+    "comment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "Unique identifier for the object.",
+          "type": "integer"
+        },
+        "author": {
+          "description": "The id of the user object, if author was a user.",
+          "type": "integer"
+        },
+        "author_email": {
+          "description": "Email address for the object author.",
+          "type": "string",
+          "format": "email"
+        },
+        "author_ip": {
+          "description": "IP address for the object author.",
+          "type": "string",
+          "format": "ipv4"
+        },
+        "author_name": {
+          "description": "Display name for the object author.",
+          "type": "string"
+        },
+        "author_url": {
+          "description": "URL for the object author.",
+          "type": "string",
+          "format": "uri"
+        },
+        "author_user_agent": {
+          "description": "User agent for the object author.",
+          "type": "string"
+        },
+        "content": {
+          "description": "The content for the object.",
+          "type": "object",
+          "properties": {
+            "raw": {
+              "description": "Content for the object, as it exists in the database.",
+              "type": "string"
+            },
+            "rendered": {
+              "description": "HTML content for the object, transformed for display.",
+              "type": "string"
+            }
+          }
+        },
+        "date": {
+          "description": "The date the object was published.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "date_gmt": {
+          "description": "The date the object was published as GMT.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "karma": {
+          "description": "Karma for the object.",
+          "type": "integer"
+        },
+        "link": {
+          "description": "URL to the object.",
+          "type": "string",
+          "format": "uri"
+        },
+        "parent": {
+          "description": "The id for the parent of the object.",
+          "type": "integer"
+        },
+        "post": {
+          "description": "The id of the associated post object.",
+          "type": "integer"
+        },
+        "status": {
+          "description": "State of the object.",
+          "type": "string"
+        },
+        "type": {
+          "description": "Type of Comment for the object.",
+          "type": "string",
+          "default": "comment"
+        },
+        "author_avatar_urls": {
+          "description": "Avatar URLs for the object author.",
+          "type": "object",
+          "properties": {
+            "24": {
+              "description": "Avatar URL with image size of 24 pixels.",
+              "type": "string",
+              "format": "uri"
+            },
+            "48": {
+              "description": "Avatar URL with image size of 48 pixels.",
+              "type": "string",
+              "format": "uri"
+            },
+            "96": {
+              "description": "Avatar URL with image size of 96 pixels.",
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "cookieAuth": {
+      "type": "apiKey",
+      "name": "X-WP-Nonce",
+      "in": "header",
+      "description": "Please see http://v2.wp-api.org/guide/authentication/"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "x-oauth1": true,
+      "flow": "accessCode",
+      "authorizationUrl": "http://wp.wolfspool.chickenkiller.com/wpasecms/oauth1/authorize",
+      "tokenUrl": "http://wp.wolfspool.chickenkiller.com/wpasecms/oauth1/request",
+      "x-accessUrl": "http://wp.wolfspool.chickenkiller.com/wpasecms/oauth1/access",
+      "scopes": {
+        "basic": "OAuth authentication uses the OAuth 1.0a specification (published as\n\t\t\t\t\tRFC5849)"
+      }
+    }
+  }
+}
