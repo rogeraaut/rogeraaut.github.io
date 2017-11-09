@@ -6,9 +6,10 @@
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/fizzbuzz.d" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="RVM: ruby-2.4.1 [rogeraaut]" jdkType="RUBY_SDK" />
+    <orderEntry type="jdk" jdkName="RVM: ruby-2.4.1 [rogeraaut] (1)" jdkType="RUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="bundler (v1.15.1, RVM: ruby-2.4.1 [rogeraaut]) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="minitest (v5.10.2, RVM: ruby-2.4.1 [rogeraaut]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="bundler (v1.15.1, RVM: ruby-2.4.1 [rogeraaut] (1)) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="power_assert (v1.1.1, RVM: ruby-2.4.1 [rogeraaut] (1)) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="test-unit (v3.2.6, RVM: ruby-2.4.1 [rogeraaut] (1)) [gem]" level="application" />
   </component>
 </module>
