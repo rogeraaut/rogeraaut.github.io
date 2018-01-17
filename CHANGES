@@ -1,3 +1,24 @@
+Version 0.4.0:
+ - add spa: ase-sms-front, docker:11
+ - module settings adapted in lang.java.d module of gh.rogeraaut.d/rogeraaut.github.io project
+ - wp, testable
+ - add gitignore in java project
+ - module settings adapted
+ - clean code ref
+ - wp
+ - ase-desk-py.win.d contribution
+ - wh contrib initial
+ - Create fw-exper.md
+ - Update README.md
+ - curl -s wp.wolfspool.chickenkiller.com/wpasecms/wp-json/apigenerate/swagger |jq "." |less >wpasecms.swagger.json
+ - corr link
+ - div boxes
+ - adding angel co profile link
+ - adding fizzbuzz sample from rb-fizzbuzz.ipynb
+ - adding gist-embed script, :testing
+ - Merge tag '0.3.0' into develop
+ - Merge branch 'r-0.3.0'
+
 Version 0.3.0:
  - Version bump to 0.2.0
  - ch
